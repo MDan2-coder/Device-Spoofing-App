@@ -4,8 +4,8 @@ interface RetriableRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean
 }
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:8000/api/v1' : '/api/v1')
-export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || (import.meta.env.DEV ? 'http://localhost:8000' : window.location.origin)
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://device-spoofing-app.onrender.com/api/v1'
+export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'https://device-spoofing-app.onrender.com'
 
 const client = axios.create({
   baseURL: API_BASE_URL,
