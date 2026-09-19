@@ -7,7 +7,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=os.path.join(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
-            "..", 
             ".env"
         ),
         env_file_encoding="utf-8",
@@ -34,7 +33,14 @@ class Settings(BaseSettings):
 
     def database_url(self) -> str:
         if self.DATABASE_URL:
-            return self.DATABASE_URL
+            database_url = self.DATABASE_URL.strip()
+            if database_url.startswith("postgres://"):
+                return database_url.replace("postgres://", "postgresql+asyncpg://", 1)
+            if database_url.startswith("postgresql://"):
+                return database_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+            if database_url.startswith("postgresql+"):
+                return "postgresql+asyncpg://" + database_url.split("://", 1)[1]
+            return database_url
         return (
             f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
             f"@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"

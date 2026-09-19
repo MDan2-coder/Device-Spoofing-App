@@ -3,6 +3,7 @@ import { ChevronDown, ChevronRight, LogOut, Menu, Server, UserRound } from 'luci
 import axios from 'axios'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { BACKEND_BASE_URL } from '../../api/client'
 
 const breadcrumbLabels: Record<string, string> = {
   dashboard: 'Dashboard',
@@ -28,7 +29,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        await axios.get('http://localhost:8000/health', { timeout: 3000 })
+        await axios.get(`${BACKEND_BASE_URL}/health`, { timeout: 3000 })
         setIsOnline(true)
       } catch {
         setIsOnline(false)
